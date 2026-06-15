@@ -10,34 +10,45 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> findAll() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(CategoryResponse::fromEntity)
+                .toList();
     }
 
-    public Category findById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+    public CategoryResponse findById(Long id) {
+        Category category = getCategoryById(id);
+        return CategoryResponse.fromEntity(category);
     }
 
-    public Category create(CategoryRequest request) {
+    public CategoryResponse create(CategoryRequest request) {
         Category category = Category.builder()
                 .name(request.name())
                 .description(request.description())
                 .build();
-        return categoryRepository.save(category);
+
+        Category savedCategory = categoryRepository.save(category);
+        return CategoryResponse.fromEntity(savedCategory);
     }
 
-    public Category update(Long id, CategoryRequest request) {
-        Category category = findById(id);
+    public CategoryResponse update(Long id, CategoryRequest request) {
+        Category category = getCategoryById(id);
 
         category.setName(request.name());
         category.setDescription(request.description());
 
-        return categoryRepository.save(category);
+        Category updatedCategory = categoryRepository.save(category);
+        return CategoryResponse.fromEntity(updatedCategory);
     }
 
     public void delete(Long id) {
-        Category category = findById(id);
+        Category category = getCategoryById(id);
         categoryRepository.delete(category);
+    }
+
+    private Category getCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
     }
 }
