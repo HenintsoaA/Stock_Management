@@ -29,6 +29,7 @@ public class SupplierService {
 
     public SupplierResponse Create(SupplierRequest request) {
 
+        // mijery fotsiny oe ef misy ve le email fa tsis hidiran'le email
         if (request.email() != null && supplierRepository.existsByEmail(request.email())) {
             throw new RuntimeException("Supplier email already exists");
         }
