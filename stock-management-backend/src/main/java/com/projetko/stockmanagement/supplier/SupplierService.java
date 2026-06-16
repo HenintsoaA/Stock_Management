@@ -27,6 +27,46 @@ public class SupplierService {
         return SupplierResponse.fromEntity(supplier);
     }
 
+    public SupplierResponse Create(SupplierRequest request) {
+
+        if (request.email() != null && supplierRepository.existsByEmail(request.email())) {
+            throw new RuntimeException("Supplier email already exists");
+        }
+
+        Supplier supplier = Supplier.builder()
+                .name(request.name())
+                .email(request.email())
+                .phone(request.address())
+                .build();
+
+        Supplier sevedSupplier = supplierRepository.save(supplier);
+        return SupplierResponse.fromEntity(sevedSupplier);
+    }
+
+    public SupplierResponse update(Long id, SupplierRequest request) {
+        Supplier supplier = getSupplierById(id);
+
+        supplierRepository.findByEmail(request.email())
+                .filter(existingSupplier -> !existingSupplier.getId().equals(id))
+                .ifPresent(existingSupplier -> {
+                    throw new RuntimeException("Supplier email already exists");
+                });
+
+        supplier.setName(request.name());
+        supplier.setEmail(request.email());
+        supplier.setPhone(request.address());
+        supplier.setAddress(request.address());
+
+        Supplier updatedSupplier = supplierRepository.save(supplier);
+        return SupplierResponse.fromEntity(updatedSupplier);
+
+    }
+
+    public void delete(Long id) {
+        Supplier supplier = getSupplierById(id);
+        supplierRepository.delete(supplier);
+    }
+
     private Supplier getSupplierById(Long id){
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
