@@ -1,10 +1,9 @@
 package com.projetko.stockmanagement.stockmovement;
 
+import com.projetko.stockmanagement.common.BaseEntity;
 import com.projetko.stockmanagement.product.Product;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StockMovement {
+public class StockMovement extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

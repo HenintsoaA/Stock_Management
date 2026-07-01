@@ -1,5 +1,7 @@
 package com.projetko.stockmanagement.supplier;
 
+import com.projetko.stockmanagement.common.exception.DuplicateResourceException;
+import com.projetko.stockmanagement.common.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,7 @@ public class SupplierService {
 
         // mijery fotsiny oe ef misy ve le email fa tsis hidiran'le email
         if (request.email() != null && supplierRepository.existsByEmail(request.email())) {
-            throw new RuntimeException("Supplier email already exists");
+            throw new DuplicateResourceException("Supplier email already exists");
         }
 
         Supplier supplier = Supplier.builder()
@@ -50,7 +52,7 @@ public class SupplierService {
         supplierRepository.findByEmail(request.email())
                 .filter(existingSupplier -> !existingSupplier.getId().equals(id))
                 .ifPresent(existingSupplier -> {
-                    throw new RuntimeException("Supplier email already exists");
+                    throw new DuplicateResourceException("Supplier email already exists");
                 });
 
         supplier.setName(request.name());
@@ -70,6 +72,6 @@ public class SupplierService {
 
     private Supplier getSupplierById(Long id){
         return supplierRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
 }

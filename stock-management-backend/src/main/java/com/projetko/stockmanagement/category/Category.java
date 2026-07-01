@@ -1,5 +1,6 @@
 package com.projetko.stockmanagement.category;
 
+import com.projetko.stockmanagement.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -13,7 +14,7 @@ import lombok.*;
 @Builder
 
 
-public class Category {
+public class Category extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

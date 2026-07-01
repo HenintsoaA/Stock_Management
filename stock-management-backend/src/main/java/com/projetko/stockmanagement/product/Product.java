@@ -2,10 +2,13 @@ package com.projetko.stockmanagement.product;
 
 
 import com.projetko.stockmanagement.category.Category;
+import com.projetko.stockmanagement.common.BaseEntity;
+import com.projetko.stockmanagement.supplier.Supplier;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -14,7 +17,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +40,9 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id") // mbola mila asina nullable false
+    private Supplier supplier;
 
 }

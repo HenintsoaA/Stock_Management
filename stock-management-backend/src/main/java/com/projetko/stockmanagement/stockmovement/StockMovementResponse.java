@@ -9,7 +9,9 @@ public record StockMovementResponse(
         String reason,
         LocalDateTime movementDate,
         Long productId,
-        String productName
+        String productName,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
     public static StockMovementResponse fromEntity(StockMovement movement) {
         return new StockMovementResponse(
@@ -19,7 +21,9 @@ public record StockMovementResponse(
                 movement.getReason(),
                 movement.getMovementDate(),
                 movement.getProduct().getId(),
-                movement.getProduct().getName()
+                movement.getProduct().getName(),
+                movement.getCreatedAt(),
+                movement.getUpdatedAt()
         );
     }
 }

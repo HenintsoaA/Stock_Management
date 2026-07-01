@@ -1,6 +1,7 @@
 package com.projetko.stockmanagement.product;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record ProductResponse(
         Long id,
@@ -10,7 +11,11 @@ public record ProductResponse(
         Integer quantity,
         BigDecimal price,
         Long categoryId,
-        String categoryName
+        String categoryName,
+        Long supplierId,
+        String supplierName,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
         // ny eo ambany an de de type io eto ambony io
 ) {
     public static ProductResponse fromEntity(Product product) {
@@ -22,7 +27,11 @@ public record ProductResponse(
                 product.getQuantity(),
                 product.getPrice(),
                 product.getCategory().getId(),
-                product.getCategory().getName()
+                product.getCategory().getName(),
+                product.getSupplier() != null ? product.getSupplier().getId() : null,
+                product.getSupplier() != null ? product.getSupplier().getName() : null,
+                product.getCreatedAt(),
+                product.getUpdatedAt()
         );
     }
 }

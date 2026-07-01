@@ -25,6 +25,8 @@ public record ProductRequest(
         BigDecimal price,
 
         @NotNull(message = "Category is required")
-        Long categoryId
+        Long categoryId,
+
+        Long supplierId
 ) {
 }

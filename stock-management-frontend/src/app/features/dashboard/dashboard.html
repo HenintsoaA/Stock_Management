@@ -1,0 +1,70 @@
+<section class="dashboard-page">
+  <header>
+    <h2>Dashboard</h2>
+    <p>Vue globale de votre stock</p>
+  </header>
+
+  @if (loading()) {
+    <p>Chargement...</p>
+  } @else if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else if (dashboard()) {
+    <div class="stats-grid">
+      <article class="stat-card">
+        <span>Produits</span>
+        <strong>{{ dashboard()!.totalProducts }}</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Catégories</span>
+        <strong>{{ dashboard()!.totalCategories }}</strong>
+      </article>
+
+      <article class="stat-card">
+        <span>Fournisseurs</span>
+        <strong>{{ dashboard()!.totalSuppliers }}</strong>
+      </article>
+
+      <article class="stat-card warning">
+        <span>Stock faible</span>
+        <strong>{{ dashboard()!.lowStockProducts }}</strong>
+      </article>
+
+      <article class="stat-card value">
+        <span>Valeur stock</span>
+        <strong>{{ dashboard()!.totalStockValue | currency:'MGA':'symbol':'1.0-0' }}</strong>
+      </article>
+    </div>
+
+    <section class="recent-section">
+      <h3>Derniers mouvements</h3>
+
+      @if (dashboard()!.recentMovements.length === 0) {
+        <p>Aucun mouvement récent.</p>
+      } @else {
+        <table>
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Type</th>
+              <th>Quantité</th>
+              <th>Raison</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (movement of dashboard()!.recentMovements; track movement.id) {
+              <tr>
+                <td>{{ movement.productName }}</td>
+                <td>{{ movement.type }}</td>
+                <td>{{ movement.quantity }}</td>
+                <td>{{ movement.reason }}</td>
+                <td>{{ movement.movementDate }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </section>
+  }
+</section>

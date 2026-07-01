@@ -1,5 +1,6 @@
 package com.projetko.stockmanagement.product;
 
+import com.projetko.stockmanagement.common.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,8 +16,16 @@ public class ProductController {
     private final ProductService productService; // pour avoir tous les dependances du service en une seule ligne
 
     @GetMapping
-    public List<ProductResponse> findAll() {
-        return productService.findAll();
+    public PageResponse<ProductResponse> search(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long supplierId
+    ) {
+        return productService.search(page, size, sortBy, direction, keyword, categoryId, supplierId);
     }
 
     @GetMapping("/{id}")

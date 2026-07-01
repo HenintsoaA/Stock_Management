@@ -1,5 +1,7 @@
 package com.projetko.stockmanagement.stockmovement;
 
+import com.projetko.stockmanagement.common.exception.BadRequestException;
+import com.projetko.stockmanagement.common.exception.ResourceNotFoundException;
 import com.projetko.stockmanagement.product.Product;
 import com.projetko.stockmanagement.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +38,10 @@ public class StockMovementService {
     public StockMovementResponse create(StockMovementRequest request){
         // verifie si ce produit existe deja pour le mettre ajour car c'est un objet de StockMovement
         Product product = productRepository.findById(request.productId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         if (request.type() == StockMovementType.OUT && product.getQuantity() < request.quantity()) {
-            throw new RuntimeException("Insufficient quantity");
+            throw new BadRequestException("Insufficient quantity");
         }
 
         if (request.type() == StockMovementType.IN) {
